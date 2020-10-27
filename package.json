@@ -23,6 +23,7 @@
     "express-validation": "^3.0.6",
     "helmet": "^4.1.1",
     "http-status": "^1.4.2",
+    "joi": "^17.3.0",
     "method-override": "^3.0.0",
     "mongoose": "^5.10.10",
     "morgan": "^1.10.0",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "babel-loader": "^8.1.0",
     "eslint": "^7.12.0",
