@@ -23,7 +23,7 @@ BoardController.getOne = async (req, res) => {
 
 BoardController.getMany = async (req, res) => {
   try {
-    const boards = await BoardService.getMany();
+    const boards = await BoardService.getMany(req.query);
     return res.status(200).json({
       result: boards,
       message: 'Get Boards successfully!',

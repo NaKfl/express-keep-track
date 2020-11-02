@@ -50,3 +50,4 @@ dist
 
 # OS file
 *.DS_Store
+.vscode

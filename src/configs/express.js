@@ -6,6 +6,8 @@ import methodOverride from 'method-override';
 import cors from 'cors';
 import { logs } from './vars';
 import routes from '../api/routes';
+import passport from 'passport';
+import strategies from './passport';
 import * as error from '../api/middlewares/error';
 
 // TODO
@@ -26,8 +28,8 @@ app.use(helmet());
 app.use(cors());
 
 // TODO
-// app.use(passport.initialize());
-// passport.use('jwt', strategies.jwt);
+app.use(passport.initialize());
+passport.use('jwt', strategies.jwt);
 // passport.use('facebook', strategies.facebook);
 // passport.use('google', strategies.google);
 

@@ -1,33 +1,36 @@
 import httpStatus from 'http-status';
-import expressValidation from 'express-validation';
+import { ValidationError } from 'express-validation';
 import APIError from '../utils/APIError';
 import { env } from '../../configs/vars';
 
 export const handler = (err, req, res, next) => {
-  const { status, message, errors, stack } = err;
+  const { status, message, errors, stack, details } = err;
   const response = {
     errors,
     stack,
+    details,
     message: message || httpStatus[status],
     code: status,
   };
 
   if (env !== 'development') {
     delete response.stack;
+    delete response.details;
   }
 
-  res.status(err.status);
+  res.status(status);
   res.json(response);
 };
 
 export const converter = (err, req, res, next) => {
   let convertedError = err;
-  if (err instanceof expressValidation.ValidationError) {
+  if (err instanceof ValidationError) {
     convertedError = new APIError({
       message: 'Validation Error',
       errors: err.errors,
-      status: err.status,
+      status: err.statusCode,
       stack: err.stack,
+      details: err.details,
     });
   } else if (!(err instanceof APIError)) {
     convertedError = new APIError({
@@ -35,9 +38,8 @@ export const converter = (err, req, res, next) => {
       status: err.status,
       stack: err.stack,
     });
-
-    return handler(convertedError, req, res);
   }
+  return handler(convertedError, req, res);
 };
 
 export const notFound = (req, res, next) => {
