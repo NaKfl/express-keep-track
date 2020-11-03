@@ -8,12 +8,13 @@ import {
   updateOne,
   removeOne,
 } from '../validations/board.validation';
+import { authorize } from '../middlewares/auth';
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(validate(getMany), BoardController.getMany)
+  .get(authorize(), validate(getMany), BoardController.getMany)
   .post(validate(createOne), BoardController.createOne);
 
 router

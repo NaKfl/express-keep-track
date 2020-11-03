@@ -1,4 +1,5 @@
 import BoardModel from '../models/board.model';
+import mongoose from 'mongoose';
 const BoardService = {};
 
 BoardService.getOne = async conditions => {
@@ -28,6 +29,11 @@ BoardService.updateOne = async (conditions, data = {}) => {
 BoardService.removeOne = async (conditions = {}) => {
   const board = await BoardModel.findOneAndRemove(conditions).lean().exec();
   return board;
+};
+
+BoardService.findByIds = async ids => {
+  const boards = await BoardModel.find().where('_id').in(ids).lean().exec();
+  return boards;
 };
 
 export default BoardService;

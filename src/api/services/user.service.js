@@ -33,4 +33,28 @@ UserService.removeOne = async (conditions = {}) => {
   return user;
 };
 
+UserService.findAndGenerateToken = async options => {
+  const { email, password, refreshObject } = options;
+  if (!email) throw 'An email is required to generate a token';
+
+  const user = await UserModel.findOne({ email }).exec();
+  let err = '';
+
+  if (password) {
+    if (user && user.passwordMatches(password)) {
+      return { user, accessToken: user.token() };
+    }
+    err = 'Incorrect email or password';
+  } else if (refreshObject && refreshObject.userEmail === email) {
+    if (moment(refreshObject.expires).isBefore()) {
+      err = 'Invalid refresh token';
+    } else {
+      return { user, accessToken: user.token() };
+    }
+  } else {
+    err = 'Incorrect email or refreshToken';
+  }
+  throw err;
+};
+
 export default UserService;

@@ -1,3 +1,4 @@
+import get from 'lodash/fp/get';
 import BoardService from '../services/board.service';
 const BoardController = {};
 
@@ -23,12 +24,15 @@ BoardController.getOne = async (req, res) => {
 
 BoardController.getMany = async (req, res) => {
   try {
-    const boards = await BoardService.getMany(req.query);
+    const user = req.user;
+    const boardIds = get('boards', user);
+    const boards = await BoardService.findByIds(boardIds);
     return res.status(200).json({
       result: boards,
       message: 'Get Boards successfully!',
     });
   } catch (error) {
+    console.log('error', error);
     return res.status(500).json({
       message: 'Some error occurred while getting Boards.',
     });

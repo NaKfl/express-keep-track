@@ -22,12 +22,28 @@ UserController.register = async (req, res, next) => {
     const user = await UserService.createOne(req.body);
     const userTransformed = user.transform();
     const token = generateTokenResponse(user, user.token());
-    return res
-      .status(201)
-      .json({
-        result: { token, user: userTransformed },
-        message: 'Register successfully!',
-      });
+    return res.status(201).json({
+      result: { token, user: userTransformed },
+      message: 'Register successfully!',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error,
+    });
+  }
+};
+
+UserController.login = async (req, res, next) => {
+  try {
+    const { user, accessToken } = await UserService.findAndGenerateToken(
+      req.body,
+    );
+    const token = generateTokenResponse(user, accessToken);
+    const userTransformed = user.transform();
+    return res.status(201).json({
+      result: { token, user: userTransformed },
+      message: 'Login successfully!',
+    });
   } catch (error) {
     return res.status(500).json({
       message: error,

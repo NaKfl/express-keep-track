@@ -75,6 +75,10 @@ UserSchema.method({
 
     return transformed;
   },
+
+  async passwordMatches(password) {
+    return bcrypt.compare(password, this.password);
+  },
 });
 
 UserSchema.statics.isEmailTaken = async function (email, excludeUserId) {
