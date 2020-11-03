@@ -1,5 +1,4 @@
 import BoardModel from '../models/board.model';
-import mongoose from 'mongoose';
 const BoardService = {};
 
 BoardService.getOne = async conditions => {

@@ -1,5 +1,6 @@
 import get from 'lodash/fp/get';
 import BoardService from '../services/board.service';
+import UserService from '../services/user.service';
 const BoardController = {};
 
 BoardController.getOne = async (req, res) => {
@@ -32,7 +33,6 @@ BoardController.getMany = async (req, res) => {
       message: 'Get Boards successfully!',
     });
   } catch (error) {
-    console.log('error', error);
     return res.status(500).json({
       message: 'Some error occurred while getting Boards.',
     });
@@ -41,14 +41,19 @@ BoardController.getMany = async (req, res) => {
 
 BoardController.createOne = async (req, res) => {
   try {
+    const user = req.user;
+    let boardIds = get('boards', user);
     const board = await BoardService.createOne({
       ...req.body,
     });
+    boardIds = [...boardIds, get('_id', board)];
+    UserService.updateOne({ _id: get('_id', user) }, { boards: boardIds });
     return res.status(201).json({
       result: board,
       message: 'Create a new Board successfully!',
     });
   } catch (error) {
+    console.log('error', error);
     return res.status(500).json({
       message: error,
     });
@@ -71,11 +76,17 @@ BoardController.updateOne = async (req, res) => {
 };
 
 BoardController.removeOne = async (req, res) => {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
+    const user = req.user;
+    const boardIds = get('boards', user);
+    const pos = boardIds.findIndex(boardId => boardId.equals(id));
+    boardIds.splice(pos, 1);
     const board = await BoardService.removeOne({
       _id: id,
     });
+    boardIds = [...boardIds.slice(0, pos), ...boardIds.slice(pos + 1)];
+    UserService.updateOne({ _id: get('_id', user) }, { boards: boardIds });
     return res.status(200).json({
       result: board,
       message: 'Delete a new Board successfully!',

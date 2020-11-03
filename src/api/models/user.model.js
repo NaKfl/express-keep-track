@@ -26,7 +26,7 @@ const UserSchema = new Schema({
     uid: String,
     token: String,
   },
-  boards: [{ boardId: String }],
+  boards: [{ type: Schema.Types.ObjectId, ref: 'board' }],
   createdAt: { type: Number, default: Date.now },
   isDeleted: { type: Boolean, default: false },
 });
