@@ -20,7 +20,7 @@ router
 router
   .route('/:id')
   .get(validate(getOne), BoardController.getOne)
-  .put(validate(updateOne), BoardController.updateOne)
+  .put(authorize(), validate(updateOne), BoardController.updateOne)
   .delete(authorize(), validate(removeOne), BoardController.removeOne);
 
 export default router;

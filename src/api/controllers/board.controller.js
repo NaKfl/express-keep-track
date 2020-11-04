@@ -53,7 +53,6 @@ BoardController.createOne = async (req, res) => {
       message: 'Create a new Board successfully!',
     });
   } catch (error) {
-    console.log('error', error);
     return res.status(500).json({
       message: error,
     });
@@ -85,7 +84,6 @@ BoardController.removeOne = async (req, res) => {
     const board = await BoardService.removeOne({
       _id: id,
     });
-    boardIds = [...boardIds.slice(0, pos), ...boardIds.slice(pos + 1)];
     UserService.updateOne({ _id: get('_id', user) }, { boards: boardIds });
     return res.status(200).json({
       result: board,

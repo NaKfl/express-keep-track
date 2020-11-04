@@ -1,4 +1,7 @@
 import BoardModel from '../models/board.model';
+import ColumnService from '../services/column.service';
+import get from 'lodash/fp/get';
+import set from 'lodash/fp/set';
 const BoardService = {};
 
 BoardService.getOne = async conditions => {
@@ -12,7 +15,20 @@ BoardService.getMany = async (conditions = {}) => {
 };
 
 BoardService.createOne = async (data = {}) => {
-  const board = await BoardModel.create(data);
+  const fistColumns = [
+    { name: 'Went Well', color: '#4352AF', cards: [] },
+    { name: 'To Improve', color: '#D63864', cards: [] },
+    { name: 'Action Items', color: '#9034AA', cards: [] },
+  ];
+
+  let columns = fistColumns.map(column => ColumnService.createOne(column));
+  columns = await Promise.all(columns);
+  columns = columns.map(column => get('_id', column).toString());
+
+  const board = await BoardModel.create({
+    ...data,
+    columns,
+  });
   return board;
 };
 
@@ -26,7 +42,11 @@ BoardService.updateOne = async (conditions, data = {}) => {
 };
 
 BoardService.removeOne = async (conditions = {}) => {
-  const board = await BoardModel.findOneAndRemove(conditions).lean().exec();
+  // const board = await BoardModel.findOneAndRemove(conditions).lean().exec();
+  const board = await BoardModel.findOne(conditions).lean().exec();
+  let columns = get('columns', board);
+  columns = columns.map(column => ColumnService.removeOne({ _id: column }));
+  await Promise.all(columns);
   return board;
 };
 
