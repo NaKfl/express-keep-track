@@ -1,5 +1,7 @@
 import UserModel from '../models/user.model';
 const UserService = {};
+import { env } from '../../configs/vars';
+import bcrypt from 'bcryptjs';
 
 UserService.getOne = async conditions => {
   const user = await UserModel.findOne(conditions).lean().exec();
@@ -20,6 +22,9 @@ UserService.createOne = async (data = {}) => {
 };
 
 UserService.updateOne = async (conditions, data = {}) => {
+  const rounds = env === 'test' ? 1 : 10;
+  const hash = await bcrypt.hash(data.password, rounds);
+  data.password = hash;
   const user = await UserModel.findOneAndUpdate(conditions, data, {
     new: true,
   })
@@ -41,7 +46,8 @@ UserService.findAndGenerateToken = async options => {
   let err = '';
 
   if (password) {
-    if (user && user.passwordMatches(password)) {
+    const match = await user.passwordMatches(password);
+    if (user && match) {
       return { user, accessToken: user.token() };
     }
     err = 'Incorrect email or password';

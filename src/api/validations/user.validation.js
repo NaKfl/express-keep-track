@@ -50,13 +50,11 @@ export const updateOne = {
     phone: Joi.string().trim().max(12),
     gender: Joi.string(),
     avatar: Joi.string().trim(),
-    local: Joi.object({
-      email: Joi.string()
-        .trim()
-        .lowercase()
-        .email({ tlds: { allow: false } }),
-      password: Joi.string().min(6).max(128),
-    }),
+    email: Joi.string()
+      .trim()
+      .lowercase()
+      .email({ tlds: { allow: false } }),
+    password: Joi.string().min(6).max(128),
     facebook: Joi.object({
       uid: Joi.string(),
       token: Joi.string().token(),
