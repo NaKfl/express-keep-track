@@ -33,7 +33,11 @@ CardService.removeOne = async (conditions = {}) => {
 };
 
 CardService.findByIds = async ids => {
-  const cards = await CardModel.find().where('_id').in(ids).lean().exec();
+  const cards = await CardModel.aggregate([
+    { $match: { _id: { $in: ids } } },
+    { $addFields: { __order: { $indexOfArray: [ids, '$_id'] } } },
+    { $sort: { __order: 1 } },
+  ]);
   return cards;
 };
 

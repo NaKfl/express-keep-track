@@ -2,6 +2,7 @@ import UserModel from '../models/user.model';
 const UserService = {};
 import { env } from '../../configs/vars';
 import bcrypt from 'bcryptjs';
+import moment from 'moment';
 
 UserService.getOne = async conditions => {
   const user = await UserModel.findOne(conditions).lean().exec();
@@ -22,9 +23,11 @@ UserService.createOne = async (data = {}) => {
 };
 
 UserService.updateOne = async (conditions, data = {}) => {
-  const rounds = env === 'test' ? 1 : 10;
-  const hash = await bcrypt.hash(data.password, rounds);
-  data.password = hash;
+  if (data.password) {
+    const rounds = env === 'test' ? 1 : 10;
+    const hash = await bcrypt.hash(data.password, rounds);
+    data.password = hash;
+  }
   const user = await UserModel.findOneAndUpdate(conditions, data, {
     new: true,
   })

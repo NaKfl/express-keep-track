@@ -8,18 +8,19 @@ import {
   updateOne,
   removeOne,
 } from '../validations/user.validation';
+import { authorize } from '../middlewares/auth';
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(validate(getMany), UserController.getMany)
+  .get(authorize(), validate(getMany), UserController.getMany)
   .post(validate(createOne), UserController.createOne);
 
 router
   .route('/:id')
-  .get(validate(getOne), UserController.getOne)
-  .put(validate(updateOne), UserController.updateOne)
+  .get(authorize(), validate(getOne), UserController.getOne)
+  .put(authorize(), validate(updateOne), UserController.updateOne)
   .delete(validate(removeOne), UserController.removeOne);
 
 export default router;

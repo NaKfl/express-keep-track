@@ -31,7 +31,6 @@ ColumnController.getMany = async (req, res) => {
       message: 'Get Columns successfully!',
     });
   } catch (error) {
-    console.log('error', error);
     return res.status(500).json({
       message: 'Some error occurred while getting Columns.',
     });
@@ -101,7 +100,6 @@ ColumnController.getManyByBoardId = async (req, res) => {
       message: 'Get Columns successfully!',
     });
   } catch (error) {
-    console.log('error', error);
     return res.status(500).json({
       message: 'Some error occurred while getting Columns.',
     });
