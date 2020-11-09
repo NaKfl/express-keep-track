@@ -87,7 +87,6 @@ UserController.oAuth = async (req, res, next) => {
       message: 'Login successfully!',
     });
   } catch (error) {
-    console.log({ error });
     return next(error);
   }
 };

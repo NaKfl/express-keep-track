@@ -7,7 +7,6 @@ export default {
       const url = 'https://graph.facebook.com/me';
       const params = { access_token, fields };
       const response = await axios.get(url, { params });
-      console.log('response', response);
       const { id, name, email, picture } = response.data;
       return {
         service: 'facebook',

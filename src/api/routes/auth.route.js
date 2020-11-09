@@ -21,4 +21,8 @@ router
   .route('/google')
   .post(validate(oAuth), oAuthLogin('google'), AuthController.oAuth);
 
+router
+  .route('/facebook')
+  .post(validate(oAuth), oAuthLogin('facebook'), AuthController.oAuth);
+
 export default router;
