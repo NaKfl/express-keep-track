@@ -1,7 +1,5 @@
 import RefreshTokenService from '../services/refreshToken.service';
 import UserService from '../services/user.service';
-import moment from 'moment-timezone';
-import { jwtExpirationInterval } from '../../configs/vars';
 import RefreshToken from '../models/refreshToken.model';
 
 const UserController = {};
@@ -17,6 +15,7 @@ async function generateTokenResponse(user, accessToken) {
     };
   } catch (err) {
     console.log('Error: ', err);
+    return null;
   }
 }
 

@@ -1,10 +1,11 @@
-import BoardModel from '../models/board.model';
-import ColumnService from '../services/column.service';
 import get from 'lodash/fp/get';
-import set from 'lodash/fp/set';
+import BoardModel from '../models/board.model';
+// eslint-disable-next-line import/no-cycle
+import ColumnService from './column.service';
+
 const BoardService = {};
 
-BoardService.getOne = async conditions => {
+BoardService.getOne = async (conditions) => {
   const board = await BoardModel.findOne(conditions).lean().exec();
   return board;
 };
@@ -21,9 +22,9 @@ BoardService.createOne = async (data = {}) => {
     { name: 'Action Items', color: '#9034AA', cards: [] },
   ];
 
-  let columns = fistColumns.map(column => ColumnService.createOne(column));
+  let columns = fistColumns.map((column) => ColumnService.createOne(column));
   columns = await Promise.all(columns);
-  columns = columns.map(column => get('_id', column).toString());
+  columns = columns.map((column) => get('_id', column).toString());
 
   const board = await BoardModel.create({
     ...data,
@@ -45,12 +46,12 @@ BoardService.removeOne = async (conditions = {}) => {
   // const board = await BoardModel.findOneAndRemove(conditions).lean().exec();
   const board = await BoardModel.findOne(conditions).lean().exec();
   let columns = get('columns', board);
-  columns = columns.map(column => ColumnService.removeOne({ _id: column }));
+  columns = columns.map((column) => ColumnService.removeOne({ _id: column }));
   await Promise.all(columns);
   return board;
 };
 
-BoardService.findByIds = async ids => {
+BoardService.findByIds = async (ids) => {
   const boards = await BoardModel.find().where('_id').in(ids).lean().exec();
   return boards;
 };

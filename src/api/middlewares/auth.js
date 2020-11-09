@@ -8,11 +8,11 @@ export const handleJWT = (req, resolve, reject) => async (err, user, info) => {
     });
   }
   req.user = user;
-  resolve();
+  return resolve();
 };
 
-export const authorize = () => (req, res, next) => {
-  return new Promise((resolve, reject) => {
+export const authorize = () => (req, res, next) =>
+  new Promise((resolve, reject) => {
     passport.authenticate(
       'jwt',
       { session: false },
@@ -20,8 +20,7 @@ export const authorize = () => (req, res, next) => {
     )(req, res, next);
   })
     .then(() => next())
-    .catch(err => next(err));
-};
+    .catch((err) => next(err));
 
-export const oAuth = service =>
+export const oAuth = (service) =>
   passport.authenticate(service, { session: false });

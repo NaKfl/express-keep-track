@@ -1,6 +1,6 @@
 import express from 'express';
-import BoardController from '../controllers/board.controller';
 import { validate } from 'express-validation';
+import BoardController from '../controllers/board.controller';
 import {
   getMany,
   createOne,

@@ -1,6 +1,7 @@
 import get from 'lodash/fp/get';
 import BoardService from '../services/board.service';
 import UserService from '../services/user.service';
+
 const BoardController = {};
 
 BoardController.getOne = async (req, res) => {
@@ -25,7 +26,7 @@ BoardController.getOne = async (req, res) => {
 
 BoardController.getMany = async (req, res) => {
   try {
-    const user = req.user;
+    const { user } = req;
     const boardIds = get('boards', user);
     const boards = await BoardService.findByIds(boardIds);
     return res.status(200).json({
@@ -41,7 +42,7 @@ BoardController.getMany = async (req, res) => {
 
 BoardController.createOne = async (req, res) => {
   try {
-    const user = req.user;
+    const { user } = req;
     let boardIds = get('boards', user);
     const board = await BoardService.createOne({
       ...req.body,
@@ -77,9 +78,9 @@ BoardController.updateOne = async (req, res) => {
 BoardController.removeOne = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = req.user;
+    const { user } = req;
     const boardIds = get('boards', user);
-    const pos = boardIds.findIndex(boardId => boardId.equals(id));
+    const pos = boardIds.findIndex((boardId) => boardId.equals(id));
     boardIds.splice(pos, 1);
     const board = await BoardService.removeOne({
       _id: id,

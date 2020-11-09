@@ -1,10 +1,10 @@
-import RefreshTokenModel from '../models/refreshToken.model';
 import crypto from 'crypto';
 import moment from 'moment-timezone';
+import RefreshTokenModel from '../models/refreshToken.model';
 
 const RefreshTokenService = {};
 
-RefreshTokenService.generate = async user => {
+RefreshTokenService.generate = async (user) => {
   try {
     const userId = user._id;
     const userEmail = user.email;
@@ -19,6 +19,7 @@ RefreshTokenService.generate = async user => {
     return tokenObject;
   } catch (err) {
     console.log('Error: ', err);
+    return null;
   }
 };
 

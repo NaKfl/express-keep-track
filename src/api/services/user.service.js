@@ -1,11 +1,12 @@
-import UserModel from '../models/user.model';
-const UserService = {};
 import { v4 as uuidv4 } from 'uuid';
-import { env } from '../../configs/vars';
 import bcrypt from 'bcryptjs';
-import moment from 'moment';
+import moment from 'moment-timezone';
+import { env } from '../../configs/vars';
+import UserModel from '../models/user.model';
 
-UserService.getOne = async conditions => {
+const UserService = {};
+
+UserService.getOne = async (conditions) => {
   const user = await UserModel.findOne(conditions).lean().exec();
   return user;
 };
@@ -17,6 +18,7 @@ UserService.getMany = async (conditions = {}) => {
 
 UserService.createOne = async (data = {}) => {
   if (await UserModel.isEmailTaken(data.email)) {
+    // eslint-disable-next-line no-throw-literal
     throw 'Email already taken!';
   }
   const user = await UserModel.create(data);
@@ -27,6 +29,7 @@ UserService.updateOne = async (conditions, data = {}) => {
   if (data.password) {
     const rounds = env === 'test' ? 1 : 10;
     const hash = await bcrypt.hash(data.password, rounds);
+    // eslint-disable-next-line no-param-reassign
     data.password = hash;
   }
   const user = await UserModel.findOneAndUpdate(conditions, data, {
@@ -42,8 +45,9 @@ UserService.removeOne = async (conditions = {}) => {
   return user;
 };
 
-UserService.findAndGenerateToken = async options => {
+UserService.findAndGenerateToken = async (options) => {
   const { email, password, refreshObject } = options;
+  // eslint-disable-next-line no-throw-literal
   if (!email) throw 'An email is required to generate a token';
 
   const user = await UserModel.findOne({ email }).exec();
@@ -69,7 +73,7 @@ UserService.findAndGenerateToken = async options => {
 
 UserService.oAuthLogin = async ({ service, id, email, name, picture }) => {
   const user = await UserModel.findOne({
-    $or: [{ [`services {service}`]: id }, { email }],
+    $or: [{ 'services {service}': id }, { email }],
   });
   if (user) {
     user.services[service] = id;

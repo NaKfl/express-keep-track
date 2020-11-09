@@ -1,6 +1,7 @@
+import get from 'lodash/fp/get';
 import ColumnService from '../services/column.service';
 import CardService from '../services/card.service';
-import get from 'lodash/fp/get';
+
 const ColumnController = {};
 
 ColumnController.getOne = async (req, res) => {

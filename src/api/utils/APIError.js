@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import httpStatus from 'http-status';
 
 class ExtendableError extends Error {

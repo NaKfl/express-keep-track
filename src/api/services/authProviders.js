@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export default {
-  facebook: async access_token => {
+  // eslint-disable-next-line camelcase
+  facebook: async (access_token) => {
     try {
       const fields = 'id, name, email, picture';
       const url = 'https://graph.facebook.com/me';
@@ -17,10 +18,12 @@ export default {
       };
     } catch (err) {
       console.log('err', err);
+      return null;
     }
   },
 
-  google: async access_token => {
+  // eslint-disable-next-line camelcase
+  google: async (access_token) => {
     try {
       const url = 'https://www.googleapis.com/oauth2/v3/userinfo';
       const params = { access_token };
@@ -35,6 +38,7 @@ export default {
       };
     } catch (err) {
       console.log('err', err);
+      return null;
     }
   },
 };

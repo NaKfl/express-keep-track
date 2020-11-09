@@ -19,7 +19,7 @@ const jwt = async (payload, done) => {
   }
 };
 
-const oAuth = service => async (token, done) => {
+const oAuth = (service) => async (token, done) => {
   try {
     const userData = await authProviders[service](token);
     const user = await UserService.oAuthLogin(userData);

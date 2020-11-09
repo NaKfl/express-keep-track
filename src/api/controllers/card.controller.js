@@ -1,4 +1,5 @@
 import CardService from '../services/card.service';
+
 const CardController = {};
 
 CardController.getOne = async (req, res) => {

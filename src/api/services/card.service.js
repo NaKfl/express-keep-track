@@ -1,9 +1,11 @@
-import CardModel from '../models/card.model';
 import get from 'lodash/fp/get';
-import ColumnService from '../services/card.service';
+import CardModel from '../models/card.model';
+// eslint-disable-next-line import/no-cycle
+import ColumnService from './column.service';
+
 const CardService = {};
 
-CardService.getOne = async conditions => {
+CardService.getOne = async (conditions) => {
   const card = await CardModel.findOne(conditions).lean().exec();
   return card;
 };
@@ -32,7 +34,7 @@ CardService.removeOne = async (conditions = {}) => {
   return card;
 };
 
-CardService.findByIds = async ids => {
+CardService.findByIds = async (ids) => {
   const cards = await CardModel.aggregate([
     { $match: { _id: { $in: ids } } },
     { $addFields: { __order: { $indexOfArray: [ids, '$_id'] } } },
@@ -41,7 +43,7 @@ CardService.findByIds = async ids => {
   return cards;
 };
 
-CardService.findByColumnId = async id => {
+CardService.findByColumnId = async (id) => {
   const column = await ColumnService.getOne({ _id: id });
   const cardIds = get('cards', column);
   const cards = await CardService.findByIds(cardIds);

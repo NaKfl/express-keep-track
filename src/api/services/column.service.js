@@ -1,10 +1,13 @@
-import ColumnModel from '../models/column.model';
 import get from 'lodash/fp/get';
-import BoardService from '../services/board.service';
-import CardService from '../services/card.service';
+import ColumnModel from '../models/column.model';
+// eslint-disable-next-line import/no-cycle
+import BoardService from './board.service';
+// eslint-disable-next-line import/no-cycle
+import CardService from './card.service';
+
 const ColumnService = {};
 
-ColumnService.getOne = async conditions => {
+ColumnService.getOne = async (conditions) => {
   const column = await ColumnModel.findOne(conditions).lean().exec();
   return column;
 };
@@ -33,17 +36,17 @@ ColumnService.removeOne = async (conditions = {}) => {
   return column;
 };
 
-ColumnService.findByIds = async ids => {
+ColumnService.findByIds = async (ids) => {
   const columns = await ColumnModel.find().where('_id').in(ids).lean().exec();
   return columns;
 };
 
-ColumnService.findByBoardId = async id => {
+ColumnService.findByBoardId = async (id) => {
   const board = await BoardService.getOne({ _id: id });
   const columnIds = get('columns', board);
   const columns = await ColumnService.findByIds(columnIds);
-  let result = columns.map(async column => {
-    let cards = await CardService.findByIds(get('cards', column));
+  let result = columns.map(async (column) => {
+    const cards = await CardService.findByIds(get('cards', column));
     return {
       ...column,
       cards,

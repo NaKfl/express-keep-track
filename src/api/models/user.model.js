@@ -2,9 +2,10 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import moment from 'moment-timezone';
 import { env, jwtExpirationInterval, jwtSecret } from '../../configs/vars';
+
 const jwt = require('jwt-simple');
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const UserSchema = new Schema({
   name: { type: String, trim: true },
   phone: { type: String, default: null },
@@ -65,7 +66,7 @@ UserSchema.method({
       'createdAt',
     ];
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       transformed[field] = this[field];
     });
 
@@ -77,7 +78,7 @@ UserSchema.method({
   },
 });
 
-UserSchema.statics.isEmailTaken = async function (email, excludeUserId) {
+UserSchema.statics.isEmailTaken = async (email, excludeUserId) => {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
 
   return !!user;

@@ -4,9 +4,9 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import methodOverride from 'method-override';
 import cors from 'cors';
+import passport from 'passport';
 import { logs } from './vars';
 import routes from '../api/routes';
-import passport from 'passport';
 import strategies from './passport';
 import * as error from '../api/middlewares/error';
 

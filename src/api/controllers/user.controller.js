@@ -1,4 +1,5 @@
 import UserService from '../services/user.service';
+
 const UserController = {};
 
 UserController.getOne = async (req, res) => {

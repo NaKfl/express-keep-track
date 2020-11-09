@@ -4,7 +4,9 @@ import APIError from '../utils/APIError';
 import { env } from '../../configs/vars';
 
 export const handler = (err, req, res, next) => {
-  const { status, message, errors, stack, details } = err;
+  const {
+    status, message, errors, stack, details,
+  } = err;
   const response = {
     errors,
     stack,

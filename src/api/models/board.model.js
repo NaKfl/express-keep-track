@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const BoardSchema = new Schema({
   name: { type: String, required: true },
   columns: [{ type: Schema.Types.ObjectId, ref: 'column' }],

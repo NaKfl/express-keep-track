@@ -1,6 +1,6 @@
 import express from 'express';
-import UserController from '../controllers/user.controller';
 import { validate } from 'express-validation';
+import UserController from '../controllers/user.controller';
 import {
   getMany,
   createOne,

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const ColumnSchema = new Schema({
   name: { type: String, required: true },
   color: { type: String, required: true },

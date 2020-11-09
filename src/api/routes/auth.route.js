@@ -1,6 +1,6 @@
 import express from 'express';
-import AuthController from '../controllers/auth.controller';
 import { validate } from 'express-validation';
+import AuthController from '../controllers/auth.controller';
 import {
   login,
   register,
