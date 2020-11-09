@@ -18,13 +18,9 @@ const UserSchema = new Schema({
     lowercase: true,
   },
   password: { type: String, require: true },
-  facebook: {
-    uid: String,
-    token: String,
-  },
-  google: {
-    uid: String,
-    token: String,
+  services: {
+    facebook: String,
+    google: String,
   },
   boards: [{ type: Schema.Types.ObjectId, ref: 'board' }],
   createdAt: { type: Number, default: Date.now },

@@ -8,12 +8,9 @@ const UserController = {};
 
 async function generateTokenResponse(user, accessToken) {
   try {
-    const tokenType = 'Bearer';
     const refreshToken = await RefreshTokenService.generate(user);
-    const { token: rfToken } = refreshToken;
-    const expiresIn = moment().add(jwtExpirationInterval, 'minutes');
+    const { token: rfToken, expires: expiresIn } = refreshToken;
     return {
-      tokenType,
       accessToken,
       refreshToken: rfToken,
       expiresIn,
@@ -75,6 +72,22 @@ UserController.refresh = async (req, res, next) => {
       message: 'Get new token successfully!',
     });
   } catch (error) {
+    return next(error);
+  }
+};
+
+UserController.oAuth = async (req, res, next) => {
+  try {
+    const { user } = req;
+    const accessToken = user.token();
+    const token = await generateTokenResponse(user, accessToken);
+    const userTransformed = user.transform();
+    return res.status(200).json({
+      result: { token, user: userTransformed },
+      message: 'Login successfully!',
+    });
+  } catch (error) {
+    console.log({ error });
     return next(error);
   }
 };

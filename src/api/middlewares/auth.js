@@ -2,6 +2,7 @@ import passport from 'passport';
 
 export const handleJWT = (req, resolve, reject) => async (err, user, info) => {
   if (err || info || !user) {
+    console.log({ err, info, user });
     return reject({
       status: 401,
       message: 'Please authenticate',
@@ -22,3 +23,6 @@ export const authorize = () => (req, res, next) => {
     .then(() => next())
     .catch(err => next(err));
 };
+
+export const oAuth = service =>
+  passport.authenticate(service, { session: false });

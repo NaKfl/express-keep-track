@@ -55,21 +55,9 @@ export const updateOne = {
       .lowercase()
       .email({ tlds: { allow: false } }),
     password: Joi.string().min(6).max(128),
-    facebook: Joi.object({
-      uid: Joi.string(),
-      token: Joi.string().token(),
-      email: Joi.string()
-        .trim()
-        .lowercase()
-        .email({ tlds: { allow: false } }),
-    }),
-    google: Joi.object({
-      uid: Joi.string(),
-      token: Joi.string().token(),
-      email: Joi.string()
-        .trim()
-        .lowercase()
-        .email({ tlds: { allow: false } }),
+    services: Joi.object({
+      facebook: Joi.string(),
+      google: Joi.string(),
     }),
     boards: Joi.array().items(Joi.string()),
     isDeleted: Joi.boolean(),

@@ -29,3 +29,9 @@ export const refresh = {
     refreshToken: Joi.string().required(),
   }),
 };
+
+export const oAuth = {
+  body: Joi.object({
+    access_token: Joi.string().required(),
+  }),
+};

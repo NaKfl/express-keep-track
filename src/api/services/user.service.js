@@ -1,5 +1,6 @@
 import UserModel from '../models/user.model';
 const UserService = {};
+import { v4 as uuidv4 } from 'uuid';
 import { env } from '../../configs/vars';
 import bcrypt from 'bcryptjs';
 import moment from 'moment';
@@ -64,6 +65,26 @@ UserService.findAndGenerateToken = async options => {
     err = 'Incorrect email or refreshToken';
   }
   throw err;
+};
+
+UserService.oAuthLogin = async ({ service, id, email, name, picture }) => {
+  const user = await UserModel.findOne({
+    $or: [{ [`services {service}`]: id }, { email }],
+  });
+  if (user) {
+    user.services[service] = id;
+    if (!user.name) user.name = name;
+    if (!user.picture) user.picture = picture;
+    return user.save();
+  }
+  const password = uuidv4();
+  return UserModel.create({
+    services: { [service]: id },
+    email,
+    password,
+    name,
+    picture,
+  });
 };
 
 export default UserService;

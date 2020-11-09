@@ -10,10 +10,6 @@ import passport from 'passport';
 import strategies from './passport';
 import * as error from '../api/middlewares/error';
 
-// TODO
-// const passport = require('passport');
-// const strategies = require('./passport');
-
 const app = express();
 
 app.use(morgan(logs));
@@ -27,11 +23,10 @@ app.use(helmet());
 
 app.use(cors());
 
-// TODO
 app.use(passport.initialize());
 passport.use('jwt', strategies.jwt);
-// passport.use('facebook', strategies.facebook);
-// passport.use('google', strategies.google);
+passport.use('facebook', strategies.facebook);
+passport.use('google', strategies.google);
 
 app.use('/api', routes);
 
