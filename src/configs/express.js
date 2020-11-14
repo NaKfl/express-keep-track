@@ -10,6 +10,7 @@ import routes from '../api/routes';
 import strategies from './passport';
 import * as error from '../api/middlewares/error';
 
+// eslint-disable-next-line import/no-mutable-exports
 const app = express();
 
 app.use(morgan(logs));

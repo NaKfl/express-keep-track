@@ -78,7 +78,10 @@ UserSchema.method({
   },
 });
 
-UserSchema.statics.isEmailTaken = async (email, excludeUserId) => {
+UserSchema.statics.isEmailTaken = async function isEmailTaken(
+  email,
+  excludeUserId,
+) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
 
   return !!user;

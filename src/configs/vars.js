@@ -7,6 +7,7 @@ dotenv.config({
 });
 
 export const env = process.env.NODE_ENV;
+export const clientURI = process.env.CLIENT_URI;
 export const port = process.env.PORT;
 export const jwtSecret = process.env.JWT_SECRET;
 export const jwtExpirationInterval = process.env.JWT_EXPIRATION_MINUTES;

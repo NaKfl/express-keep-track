@@ -29,6 +29,7 @@ UserController.register = async (req, res, next) => {
       message: 'Register successfully!',
     });
   } catch (error) {
+    console.log('error', error);
     return res.status(500).json({
       message: error,
     });

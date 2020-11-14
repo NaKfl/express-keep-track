@@ -54,9 +54,11 @@ UserService.findAndGenerateToken = async (options) => {
   let err = '';
 
   if (password) {
-    const match = await user.passwordMatches(password);
-    if (user && match) {
-      return { user, accessToken: user.token() };
+    if (user) {
+      const match = await user.passwordMatches(password);
+      if (match) {
+        return { user, accessToken: user.token() };
+      }
     }
     err = 'Incorrect email or password';
   } else if (refreshObject && refreshObject.userEmail === email) {
